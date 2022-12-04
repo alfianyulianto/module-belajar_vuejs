@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- :items="kelas" - mengambil sebuah property data "kelas" pada parent component -->
+      <!-- :input="kelasBaru" - mengambil sebuah property data "kelasBaru" pada parent component -->
+      <!-- :count="count" - mengambil sebuah property data "count" pada parent component -->
+      <!-- <main-component
+        :items="kelas"
+        :input="kelasBaru"
+        :count="count"
+        v-on:hapus-kelas="hapuskelas($event)"
+        v-on:set-count="setCount()"
+        ></main-component> -->
+      <!-- :hapus-kelas="hapuskelas($event)" - mengambil sebuah method data "hapuskelas" pada parent component -->
+      <!-- :tambah-kelas="submit()" - mengambil sebuah method data "submit" pada parent component -->
+      <main-component
+        :items="kelas"
+        :count="count"
+        v-on:hapus-kelas="hapuskelas($event)"
+        v-on:tambah-kelas="submit($event)"
+        v-on:set-count="setCount()"
+        ><h3>
+          Daftar Kelas (ini ditulis dengan menggunakan tag slot )
+        </h3></main-component
+      >
+    </div>
+
+    <script src="../assets/vue.js"></script>
+    <script>
+      Vue.component("main-component", {
+        // Props merupakan costum attribute yang dapat kita daftarkan pada suatu component. Pada saat nilai di kirim ke attribute props maka nilai tersbut akan menjadi property data pada component
+        // props: ["items", "input", "count"],
+        // <input type="text" @keyup.13="submit" v-model="input">
+        // <p>= {{ input }}</p>
+        props: ["items", "count"],
+        template: `
+        <main>
+          <h3>Tambah Kelas Baru</h3>
+          <input type="text" v-on:keyup.13="$emit('tambah-kelas', $event)">
+
+          <hr>
+          <slot></slot>
+          <template v-if="items.length > 0">
+            <ul>
+              <li v-for="(item, index) in items">{{ item }}
+
+                <a href="#" v-on:click.prevent="$emit('hapus-kelas', index)">Hapus</a>
+                </li>
+            </ul>
+            <hr>
+            <button v-on:click="$emit('set-count')">Klik ke-{{ count }} kali</button>
+          </template>
+        </main>
+          `,
+        methods: {
+          // submit() {
+          //   this.items.unshift(this.input);
+          //   this.input = "";
+          // },
+        },
+      });
+
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          kelas: ["PHP", "Javascript"],
+          count: 0,
+        },
+        methods: {
+          hapuskelas(index) {
+            this.kelas.splice(index, 1);
+          },
+          submit(event) {
+            // event digunakan untuk menangkap object dari sebuah elemen input
+            this.kelas.unshift(event.target.value); // menambah value dari input ke dalam property kelas
+            event.target.value = ""; // menghilangkan value dari input
+          },
+          setCount() {
+            return this.count++;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

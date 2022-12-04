@@ -1,0 +1,5 @@
+- Computed Property : seperti kita mendefinisikan sebuah property atau variable bisa kedalam Vue.js tapi ini berbentuk fungsi
+- Cara membuat "computed property" seperti membuat fungsi di dalam option "methods" tapi ini berada di dalam option "computed"
+- Tujuan "computed property" 
+  * untuk menyederhanakan sebuah statement dan tinggal memangil sesuai nama property
+  * menyembunikan logika program ke dalam sebuah fungsi

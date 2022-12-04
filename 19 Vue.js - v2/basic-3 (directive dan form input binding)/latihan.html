@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .active {
+        background-color: aquamarine;
+        padding: 10px;
+      }
+      .done {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <button :class="{active: menu ===  'home'}" @click="changeMenu('home')">
+        Home
+      </button>
+      <button :class="{active: menu === 'about'}" @click="changeMenu('about')">
+        About
+      </button>
+      <button
+        :class="{active: menu === 'contact'}"
+        @click="changeMenu('contact')"
+      >
+        Contact
+      </button>
+
+      <hr />
+      <div>
+        <input
+          type="text"
+          placeholder="Tambahkan judul pembelajaran"
+          v-model:value="newTask"
+        />
+        <button @click="addTask">Add</button>
+
+        <h3>Daftar Pembelajaran</h3>
+        <ul>
+          <li v-for="todo in todoList">
+            <!-- class done dijanlankan ketika todo.done bernilai truthy -->
+            <span :class="{done: todo.done}"> {{ todo.task }} </span>
+            <input type="checkbox" v-model="todo.done" />
+          </li>
+        </ul>
+
+        <h3>Daftar Pembelajaran</h3>
+        <ul>
+          <li v-for="todo in todoList">
+            {{ todo.task }}
+            <button @click="removeTodo(todo)">X</button>
+          </li>
+        </ul>
+      </div>
+
+      <hr />
+
+      <template v-if="todoList.length > 1">
+        <p v-for="(todo, index) in todoList">
+          Hari ke-{{ index+1 + ' ' + todo.task }}
+        </p>
+      </template>
+
+      <h3>List Rendering Array</h3>
+      <ul>
+        <template v-for="(a, i) in arr">
+          <li>Indeks ke-{{ i +' adalah angka ' + a }}</li>
+        </template>
+      </ul>
+
+      <hr />
+
+      <h3>List Rendering Object</h3>
+      <ul>
+        <template v-for="(o, key) in obj">
+          <li>{{ key }} : {{ o }}</li>
+        </template>
+      </ul>
+
+      <ul>
+        <template v-for="(o, key, index) in obj">
+          <li>{{ index }} - {{ key }} : {{ o }}</li>
+        </template>
+      </ul>
+
+      <hr />
+
+      <h3>v-for in Range</h3>
+      <template v-for=" n in 10">
+        <p>{{ n }}</p>
+      </template>
+
+      <hr />
+
+      <div>
+        <label
+          ><input type="checkbox" value="React" v-model="checked" />React</label
+        >
+        <label
+          ><input type="checkbox" value="Vue" v-model="checked" />Vue</label
+        >
+        <label
+          ><input type="checkbox" value="Node" v-model="checked" />Node</label
+        >
+        <span v-text="checked"></span>
+      </div>
+
+      <hr />
+      <div>
+        <input
+          type="text"
+          v-model="namaDepan"
+          placeholder="Masukan nama depan anda"
+        />
+        <input
+          type="text"
+          v-model="namaBelakang"
+          placeholder="Masukan nama belakang anda"
+        />
+        <p>Nama depan saya : {{ namaDepan }}</p>
+        <p>Nama belakang saya : {{ namaBelakang }}</p>
+        <p>Nama lengkap saya : {{ getNamaLengkap() }}</p>
+      </div>
+
+      <hr />
+
+      <h3>Method Even Hindling</h3>
+      <button v-on:click="greet">Klik</button>
+
+      <hr />
+      <h3>Methods in Inline Hindler</h3>
+      <button @click="say('Hi!')">Say hi!</button>
+      <button @click="say('Hello!')">Say hello!</button>
+
+      <hr />
+      <h3>Event Modifier</h3>
+      <p>.stop .prevent .capture .self .once .passive</p>
+
+      <a href="#" v-on:click="panggil('Hai', $event)">Klik ini</a>
+
+      <hr />
+      <h3>Key Modifier</h3>
+      <input type="text" @keyup.13="show($event)" />
+      <!-- <input type="text" @kedown.enter="show()" /> -->
+    </div>
+    <script src="../assets/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          menu: "",
+          newTask: "",
+          todoList: [
+            { done: true, task: "Belajar Rest APi untuk pemula" },
+            { done: false, task: "Belajar HTML, CSS dan Javascript" },
+            { done: true, task: "Belajar JQuery untuk pemula" },
+          ],
+          arr: [1, 2, 3, 4, 5],
+          obj: {
+            nama: "Alfian Yulianto",
+            umur: 22,
+            pekerjaan: "Mahasiswa",
+          },
+          mhs: {
+            nama: "Budi Doremi",
+            nim: "L200180100",
+            ipk: [3.18, 3.56, 4, 4, 3.73],
+          },
+          cek: false,
+          checked: [],
+          namaDepan: "",
+          namaBelakang: "",
+        },
+        methods: {
+          changeMenu(m) {
+            this.menu = m;
+          },
+          addTask() {
+            this.todoList.push({ done: false, task: this.newTask });
+          },
+          removeTodo(todo) {
+            this.todoList = this.todoList.filter((t) => t !== todo);
+          },
+          getNamaLengkap: function () {
+            return this.namaDepan + " " + this.namaBelakang;
+          },
+          greet(event) {
+            // parameter event akan menampilkan obeject dari DOM HTML
+            console.log(event);
+            alert(event.target.outerHTML);
+          },
+          say(message) {
+            alert(message);
+          },
+          panggil(msg, event) {
+            event.preventDefault();
+            alert(msg);
+          },
+          show(event) {
+            console.log(event);
+            alert(` Anda telah menuliskan kata "${event.target.value}"`);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

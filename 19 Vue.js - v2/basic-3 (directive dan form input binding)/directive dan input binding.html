@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beginner Vue</title>
+    <style>
+      body {
+        margin: 5%;
+        font-family: "Quick", sans-serif;
+      }
+      #bg, .bg {
+        width: 50px;
+        height: 20px;
+        background-color: purple;
+      }
+      .active {
+        font-weight: bold;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="../assets/vue.png" alt="" />
+      <h1>What is Vue.js</h1>
+      <p>The Javascript Framework to Build User Interface</p>
+    </header>
+    <div id="app">
+      <ul>
+        <li v-text="name"></li>
+        <hr />
+        <li v-html="link"></li>
+        <hr />
+        <li v-show="vs">Ini v Show</li>
+        <hr />
+        <li v-if="ifElse">Ini v-if</liv>
+        <li v-else>Ini v-else</li>
+        <hr />
+        <li v-for="item in items" >
+          <b>{{ item.text }}</b>
+        <!-- <li v-for="(item, index) in items" :key="index"> -->
+        <!-- <b>{{ item.text }} dengan index ke- {{ index }}</b> -->
+        </li>
+      </ul>
+
+      <hr />
+      <button v-on:click="onClick">Klik</button>
+      <button v-on:click="onReset">Reset</button>
+      <p v-if="countState"><b>Tombol klik {{ count }} kali</b></p>
+      <p v-else><b>Tombol belum diklik</b></p>
+      <hr />
+      <button v-on:click="say('Hallo')">Say Hallo</button>
+      <button v-on:click="say('Hai')">Say Hai</button>
+      <hr />
+      <button v-on:click.once="onceClick">Once Click</button>
+      <hr>
+
+      <!-- <img v-bind:src="imageUrl" alt=""> -->
+      <img :src="imageUrl" alt="">
+      <hr>
+      <div :id="bg_color"></div>
+      <hr>
+      <hr>
+      <div :class="bg_color"></div>
+      <hr>
+      <div :class="{active: isActive, 'text-danger':hasError}">Ini adalah kelas active</div>
+      <hr>
+      <input type="text" v-bind:value="val">
+
+      <hr>
+      <h3>Form Input Binding</h3>
+      <!-- <input v-model="message" placeholder="Masukan kata"> -->
+      <textarea v-model="message" cols="30" rows="10" placeholder="Masukan kata"></textarea>
+      <p>Anda mengetikan kata: {{ message }}</p>
+      <hr>
+      <input type="checkbox"  v-model="checked">
+      <label for="checkbox">{{ checked }}</label>
+      <hr>
+      <input type="checkbox" value="Jack" v-model="checkedNames">
+      <label for="jack">Jack</label>
+      <input type="checkbox" value="John" v-model="checkedNames">
+      <label for="john">John</label>
+      <input type="checkbox" value="Mike" v-model="checkedNames">
+      <label for="mike">Mike</label>
+      <br>
+      <span>Checked names: {{ checkedNames }}</span>
+      <hr>
+      <input type="radio" value="One" v-model="picked">
+      <label for="one">One</label>
+      <br>
+      <input type="radio" value="Two" v-model="picked">
+      <label for="two">Two</label>
+      <br>
+      <span>Picked: {{ picked }}</span>
+      <hr>
+      <select v-model="selected">
+        <option disabled value="">Select this</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      <span>Selected: {{ selected }}</span>
+      <hr>
+      <select v-model="selectedOfArray" multiple>
+        <option value="Alfian">ALFIAN</option>
+        <option value="Budi">BUDI</option>
+        <option value="Erik">ERIK</option>
+      </select>
+      <span>Selected: {{ selectedOfArray }}</span>
+      <hr>
+    </div>
+    <br><br><br>
+    <footer>Copyright @2022</footer>
+    <script src="../assets/vue.js"></script>
+
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          name: "Alfian Yulianto",
+          link: "<a href='#directive'>Klik di sini</>",
+          vs: null,
+          ifElse: true,
+          // ifElse: false,
+          items: [
+            { text: "Ini teks pertama" },
+            { text: "Ini teks kedua" },
+            { text: "Ini teks ketiga" },
+          ],
+          countState: false,
+          count: 0,
+          imageUrl: "../assets/images.png",
+          bg_color: "bg",
+          isActive: true,
+          val: "Ini nilai default input",
+          message: "",
+          checked: false,
+          checkedNames: [],
+          picked:"",
+          selected: "",
+          selectedOfArray: [],
+        },
+        methods: {
+          onClick() {
+            this.countState = true
+            this.count++
+          },
+          onReset() {
+            this.countState = false
+            this.count = 0
+          },
+          say(message) {
+            alert (message)
+          },
+          onceClick(){
+            alert("Setelah ini kamu tida bisa mengklik aku lagi!")
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

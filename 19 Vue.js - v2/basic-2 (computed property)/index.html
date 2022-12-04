@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Beginner</title>
+    <style>
+      body {
+        margin: 5%;
+        font-family: "Quick", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <img src="../assets/vue.png" alt="" />
+        <h1>What is Vue.js</h1>
+        <p>The Javascript Framework to Build User Interface</p>
+      </header>
+      <ul>
+        <li>{{ getName() }}</li>
+        <li>{{ getAge() }}</li>
+        <li>{{ getAddress() }}</li>
+      </ul>
+
+      <!-- Computed Property -->
+      <p>Nama Lengkap: {{fullName}}</p>
+      <p>Bilangan {{ bil + ' adalah bilangan ' + infoBil }}</p>
+
+      <!-- Compputer Setter -->
+      <li>{{ fullName = "Alfian"}}</li>
+      <li>{{ fullName}}</li>
+    </div>
+
+    <footer>Copyright @2022</footer>
+
+    <script src="../assets/vue.js"></script>
+    <script>
+      const data = {
+        name: "Alfian Yulianto",
+        age: 22,
+        address: "Solo",
+
+        // Computed Property
+        qty: 1,
+        firstName: "Budi ",
+        lastName: "Doremi",
+        bil: 30,
+      };
+
+      const vm = new Vue({
+        el: "#app",
+        data: data,
+
+        // Poperty Methods
+        methods: {
+          getName: function () {
+            return "Name: " + this.name;
+          },
+          getAge() {
+            return "Age: " + this.age;
+          },
+          getAddress() {
+            return "Address: " + this.solo;
+          },
+          changeName(newName) {
+            // fungsi rubah nama
+            this.name = newName; // ubah property nama sesuai dengan parameter yang diisi saat fungsi di panggil
+            return this.getName(); // memanggil fungsi getName()
+          },
+        },
+
+        // Computed Property
+        computed: {
+          totalBayar: function () {
+            return this.qty * 1000;
+          },
+          // fullName: function () {
+          //   return this.firstName + this.lastName;
+          // },
+          infoBil: function () {
+            return this.bil % 2 === 0 ? "Genap" : "Ganjil";
+          },
+
+          // Computed Setter
+          fullName: {
+            // CARA AKSES get: vm.fullName
+            // CARA AKSES set: vm.fullName = "John Doe"
+            // getter
+            get: function () {
+              return this.firstName + this.lastName;
+            },
+            // setter
+            set: function (newValue) {
+              // newValue = "Budi"
+              var names = newValue.split(" "); // names = ["Budi"]
+              this.firstName = names[0]; // Budi
+              this.lastName = names[names.length - 1]; // Budi
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

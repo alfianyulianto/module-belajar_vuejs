@@ -1,0 +1,41 @@
+- Instansiasi Vue
+- Karena vue merupakan sebuah object maka memiliki sebuah option-option
+- Option-option tersebut bisa berupa "propety atau method" yang merupakan pasangan antara "key dan value"
+
+<script>
+  const data = {
+    name : "Alfian Yulianto",
+    age: 22,
+    worker: false,
+    address: ''
+  }
+  const vm = new Vue({    // instansiasi object vue ke dalam sebuah variabel
+    el: '#app'            // key el - untuk menentukan element yang mau dijadikan sebagai sistem "component". value dapat berupa string, string selector, atau element html
+    data: data,               // key data - untuk menyimpan data dapat berupa srting, boolean, number
+     methods: {               // key methods - untuk menyimpan fungtion atau method
+      introduction() {
+        console.log("My name is " + this.name);
+      },
+      my_address() {
+        console.log("My name is " + this.address);
+      },
+    },
+  })
+</script>
+
+- Untuk mengakses object Vue lewat "console" (nama instansiasi dari object.$name_option)
+- Untuk mengakses properti dari Instansiasi Vue kita bisa gunakan "$"
+  * vm             // ouput: Object
+  * vm.age         // output: 22
+  * vm.$data       // output: Object
+  * vm.$data.nama  // output: "Alfian Yulianto"
+  * vm.$data.age   // output: 22
+  * vm.$data.age = 21   
+  * vm.$data.worker = true
+  * vm.name = "Budi Doremi"
+  * vm.$el == document.querySelector("#app")    // output: true
+  * vm.$data == data                            // output: true
+  * vm.introduction()                            // output: My name is Alfian Yulianto
+  * vm.address()                            // output: My address is
+  * vm.address = "Solo"
+  * vm.address()                            // output: My address is Solo

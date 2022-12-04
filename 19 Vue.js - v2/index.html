@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biginner Vue</title>
+    <style>
+      body {
+        margin: 5%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- :title="judul" - melakukan binding data terhadap property "judul" yang ada di parent  -->
+      <header-component :title="judul"></header-component>
+      <nav>
+        <router-link to="/">Home</router-link>
+        <router-link to="/about">About</router-link>
+        <router-link to="/kelas">Kelas</router-link>
+      </nav>
+      <main>
+        <!-- <kelas-component
+          title="Tambah Daftar Kelas"
+          :items="kelas"
+          v-on:delete="remove($event)"
+        ></kelas-component> -->
+        <router-view
+          title="Tambah Daftar Kelas"
+          :items="kelas"
+          v-on:delete="remove($event)"
+          v-on:submit-kelas="addKelas($event)"
+        ></router-view>
+      </main>
+      <footer-component :title="judul"></footer-component>
+    </div>
+    <script src="../assets/vue.min.js"></script>
+    <script src="../assets/vue-router.js"></script>
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
+
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyCMLHybarQhlv61iV-a2e3UQTqZI39Wjb8",
+        authDomain: "tutorial-vuejs-c316f.firebaseapp.com",
+        databaseURL: "https://tutorial-vuejs-c316f-default-rtdb.firebaseio.com",
+        projectId: "tutorial-vuejs-c316f",
+        storageBucket: "tutorial-vuejs-c316f.appspot.com",
+        messagingSenderId: "515684851640",
+        appId: "1:515684851640:web:64d629ba38655160f0794d",
+        measurementId: "G-10FEKMKWX2",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://tutorial-vuejs-c316f-default-rtdb.firebaseio.com/";
+
+      const db = getDatabase();
+      const starCountRef = ref(db, "posts/" + postId + "/starCount");
+      const resilt = onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        updateStarCount(postElement, data);
+      });
+      console.log("OK");
+    </script>
+
+    <script>
+      // VUE ROUTER
+      // 1. Mendefinisikan route component
+      const Home = {
+        template: `<div>Home</div>`,
+      };
+      const About = {
+        template: `<div>About</div>`,
+      };
+      const Kelas = {
+        props: ["title", "items"],
+        data: function () {
+          return {
+            kelas: {
+              judul: "",
+              deskripsi: "",
+              gambar: "",
+            },
+            previewImg: "",
+            error: {
+              judul: "",
+              deskripsi: "",
+            },
+          };
+        },
+        template: `<div>
+            <h3>{{ title }}</h3>
+            <form v-on:submit.prevent="submitkelas">
+              <div>
+                <label for="kelas">Kelas</label>
+                <input type="text" name="kelas" id="kelas" v-model="kelas.judul" />
+                <div style="color:red;" v-if="error.judul"><small>{{ error.judul }}</small></div>
+              </div>
+              <div>
+                <label for="deskripsi">Deskripsi</label>
+                <textarea name="deskripsi" id="deskripsi" v-model=kelas.deskripsi></textarea>
+                <div style="color:red;" v-if="error.deskripsi"><small>{{ error.deskripsi }}</small></div>
+              </div>
+              <div>
+                <label for="gambar">Gambar</label>
+                <img :src="previewImg"  v-if="previewImg" width="100px" height="50px" />
+                <input type="file" ref="gambar" name="gambar" id="gambar" v-on:change="upload" />
+              </div>
+              <button type="submit">Submit</button>
+            </form>
+            <h3>Daftar Kelas</h3>
+            <template v-if="items.length > 0">
+                <ul>
+                  <li v-for="item in items">
+                    <img :src="'images/' + item.gambar" width="50px" height="27px" />
+                    <p>
+                      {{ item.judul }}
+                      <a href="" v-on:click.prevent="$emit('delete', item.id)" >hapus</a>
+                      <router-link :to="'/kelas/' + item.id">Lihat Kelas</router-link>
+                    </p>
+                  </li>
+                </ul>
+            </template>
+          </div>`,
+        methods: {
+          submitkelas() {
+            // VALIDATION
+            // hapus data error
+            this.error.judul = "";
+            this.error.deskripsi = "";
+
+            // cek apakah kelas judul dan kelas deskripsi kosong
+            if (this.kelas.judul === "") {
+              this.error.judul = "Judul is required";
+            }
+            if (this.kelas.deskripsi === "") {
+              this.error.deskripsi = "Deskripsi is required";
+            }
+            // cek jika kelas judul dan kelas deskripsi tidak kosong
+            if (this.kelas.judul && this.kelas.deskripsi) {
+              const data = {
+                id: uuidv4(),
+                judul: this.kelas.judul,
+                deskripsi: this.kelas.deskripsi,
+                gambar: this.kelas.gambar,
+              };
+              // kirim sebuah data ke parent
+              this.$emit("submit-kelas", data);
+
+              // menghilangkan isi dari form input
+              this.kelas.judul = "";
+              this.kelas.deskripsi = "";
+              this.previewImg = "";
+              this.$refs.gambar.value = "";
+            }
+          },
+          upload(event) {
+            // ambil nama gambarnya
+            const nameImg = event.target.files[0].name;
+            // isi data kelas gambar dengan nama gambar
+            this.kelas.gambar = nameImg;
+
+            // buat gambar menjadi sebuah link object
+            this.previewImg = URL.createObjectURL(event.target.files[0]);
+          },
+        },
+      };
+      const notFound = {
+        template: `<div style="background-color: gray; font-size: 26px;"><h1>Halaman tidak ditemukan</h1></div>`,
+      };
+      const detailKelas = {
+        // $route.params.id : digunakan untuk mengambil data id yang di kiri lewat url
+        template: `<div>
+          <img :src="'../images/' + dataKelas.gambar" />
+          <h1>{{ dataKelas.judul }}l - {{ $route.params.id }}</h1>
+          <p>Deskripsi : {{ dataKelas.deskripsi }}</p>
+          <router-link to="/kelas">Kembali</router-link>
+        </div>
+        `,
+        data: function () {
+          return {
+            dataKelas: {},
+          };
+        },
+        created() {
+          this.filterKelas();
+        },
+        methods: {
+          filterKelas() {
+            let kelas = JSON.parse(localStorage.getItem("kelas"));
+            let id = this.$route.params.id;
+            let item = kelas.filter((k) => k.id == id);
+            this.dataKelas = item[0];
+          },
+        },
+      };
+      // 2. Mendefinisikan sebuah route
+      // Setiap rote sebaiknya dipetakan ke sebuah coponent
+      const routes = [
+        { path: "/", component: Home },
+        { path: "/about", component: About },
+        { path: "/kelas", component: Kelas },
+        { path: "/kelas/:id", component: detailKelas },
+        { path: "*", component: notFound },
+      ];
+      // 3. Instansian Route
+      const router = new VueRouter({
+        mode: "history",
+        routes, // short for `routes: routes`
+      });
+
+      // GLOBAL RCOMPONEN
+      Vue.component("header-component", {
+        props: ["title"],
+        data: function () {
+          return {
+            urlImages: "../assets/vue.png",
+          };
+        },
+        template: `<header>
+          <img :src="urlImages" alt="" />
+          <h1></h1>
+          <p>The Javascript Framework to Build User Interface</p>
+        </header>
+        `,
+      });
+      // Vue.component("kelas-component", {
+      //   props: ["title", "items"],
+      //   data: function () {
+      //     return {
+      //       // kelas: ["HTML", "PHP", "Javascript"],
+      //       kelasBaru: "",
+      //     };
+      //   },
+      //   template: `<div>
+      //     <h3>{{ title }}</h3>
+      //     <input type="text" @keyup.enter="submit" v-model="kelasBaru" />
+
+      //     <h3>Daftar Kelas</h3>
+      //     <template v-if="items.length > 0">
+      //         <ul>
+      //           <li v-for="(item, index) in items">{{ item }}
+      //           <a href="" v-on:click.prevent="$emit('delete', index)" >hapus</a>
+      //           </li>
+      //         </ul>
+      //     </template>
+      //   </div>`,
+      //   methods: {
+      //     submit() {
+      //       this.items.push(this.kelasBaru);
+      //       this.kelasBaru = "";
+      //     },
+      //   },
+      // });
+
+      Vue.component("footer-component", {
+        props: [],
+        data: function () {
+          return {
+            copyright: "@Copyright 2022",
+          };
+        },
+        template: `
+          <footer>
+            <p>{{ copyright }}</p>
+          </footer>`,
+      });
+
+      const vm = new Vue({
+        el: "#app",
+        router,
+        data: {
+          judul: "Learn Vue.js",
+          // kelas: [
+          //   {
+          //     id: 1,
+          //     judul: "Javascript",
+          //     deskripsi: "Learn Javascript Fundamental",
+          //     gambar: "javascript.png",
+          //   },
+          //   {
+          //     id: 2,
+          //     judul: "PHP",
+          //     deskripsi: "Learn PHP Fundamental",
+          //     gambar: "php.jpg",
+          //   },
+          //   {
+          //     id: 3,
+          //     judul: "Codeigniter",
+          //     deskripsi: "Learn Codeigniter Framework for PHP",
+          //     gambar: "codeigniter.png",
+          //   },
+          // ],
+          kelas: [],
+          kelasBaru: "",
+        },
+        // Life Cycle Hooks
+        //fungsi created() : akan dijalankan pada saat Vue-nya dibuat
+        created() {
+          this.kelas = JSON.parse(localStorage.getItem("kelas")) || [];
+          console.log("Created");
+        },
+        beforeCreate() {
+          console.log("Before Create");
+        },
+        beforeUpdate() {
+          console.log("Before Update");
+        },
+        updated() {
+          console.log("Updated");
+        },
+        methods: {
+          remove(id) {
+            // filter kelas berdasarkan id yang ada
+            this.kelas = this.kelas.filter((k) => {
+              return k.id !== id;
+            });
+            localStorage.setItem("kelas", JSON.stringify(this.kelas));
+          },
+          addKelas(data) {
+            this.kelas.push(data);
+            // localStorage sebuah tempat untuk menampung data pada browser
+            // cara mengakses di console ketik "window.localStorage"
+            // localstirage.setItem('name', data) : digunakan untuk menyimpan data pada localStorage
+            // karena di localStorage tidak bisa membaca format object biasa maka ubah dulu menjadi JSON menggunakan JSON.stringify()
+            localStorage.setItem("kelas", JSON.stringify(this.kelas));
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

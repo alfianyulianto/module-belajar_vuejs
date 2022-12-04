@@ -1,0 +1,23 @@
+- Vue merupakam Framework Javascript untuk mmbangun "user interface". Vue dibangun di atas HTML, CSS dan Javascript standar yang menyediakan model pemogran deklaratif dan berbasis "component" yang membantu mengembankan UI secara "sederhana" maupun "kompleks".
+
+- Version 3 Vue.js 
+
+Materi yang ada di tutorial https://vuejs.org/tutorial/#step-1
+- Declarative Rendering (mustaches syntax {{  }})
+- Attribute Bindings (<div :id="dynamicId"></div>)
+- Event Listeners (<button @click="increment">{{ count }}</button>)
+- Form Bindings (menggabungkan attribute bindings dan event listerners secara bersamaan <input v-model="text">)
+- Conditional Rendering (if else)
+- List Rendering  (
+  <ul>
+  <li v-for="todo in todos" :key="todo.id">
+    {{ todo.text }}
+  </li>
+</ul>
+)
+- Computed Property 
+- Watchers 
+- Components 
+- Props
+- Emits 
+- Slots 

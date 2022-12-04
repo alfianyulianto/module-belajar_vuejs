@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biginner Vue</title>
+  </head>
+  <body>
+    <div id="app">
+      <header-component v-bind:title="judul"></header-component>
+      <main-component title="Tambahkan Kelas Baru"></main-component>
+      <footer-component></footer-component>
+    </div>
+    <script src="../assets/vue.js"></script>
+    <script>
+      Vue.component("header-component", {
+        props: ["title"],
+        data: function () {
+          return {
+            urlImages: "../assets/vue.png",
+          };
+        },
+        template: `<header>
+          <img :src="urlImages" />
+          <h1>{{ title }}</h1>
+          <p>The Javascript Framework to Build User Interface</p>
+        </header>`,
+      });
+
+      Vue.component("main-component", {
+        props: ["title"],
+        data: function () {
+          return {
+            kelas: ["PHP", "Javascript"],
+            kelasBaru: "",
+          };
+        },
+        template: ` <main>
+          <h2>{{ title }}</h2>
+          <input type="text" @keyup.13="submit" v-model="kelasBaru" />
+          
+          <h3>Daftar Kelas</h3>
+          <template v-if="kelas.length > 0">
+            <ul>
+              <li v-for="k in kelas">{{ k }}</li>
+            </ul>
+          </template>
+        </main>`,
+        methods: {
+          submit() {
+            this.kelas.unshift(this.kelasBaru);
+            this.kelasBaru = "";
+          },
+        },
+      });
+
+      Vue.component("footer-component", {
+        data: function () {
+          return {
+            copyright: "@Copyright 2022",
+          };
+        },
+        template: `<footer>
+          <p v-text="copyright"></p>
+        </footer>`,
+      });
+
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          judul: "Learn Vue.js",
+        },
+      });
+    </script>
+  </body>
+</html>

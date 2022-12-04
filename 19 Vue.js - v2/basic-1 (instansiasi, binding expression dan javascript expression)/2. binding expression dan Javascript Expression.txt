@@ -1,0 +1,88 @@
+- Vue.js menggunakan sebuah HTML-based sintaks yang menungkinkan kita untuk mendeklarasikan "bind"
+
+* TEXT *
+- untuk menampilkan data pada object Vue kita gunakan sintaks {{  }} (interpolation)
+- interpolasi({{  }}) digunakan untuk memanggil sebuah properti yang ada pada option data
+- interpolasi akan berganti jika nilai dari poperti sebuah object dirubah
+- v-once : sebuah directive Vue.js agar saat melakukan interpolasi perubahan data pada DOM
+<html>
+  <div id="app">
+    <ul>
+      <li v-once>Name: {{name}}</li> 
+      <li>Age: {{age}}</li>
+    </ul>
+  </div>
+</html>
+<script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        // string, number, boolean
+        name: "Alfian Yulianto",
+        age: 22,
+      },
+    });
+</script>
+
+* RAW HTML *
+- interpolasi {{  }} digunakan untuk menampilkan sebuah "plain text" bisa bukan sebagai tag HTML
+- agar interpolasi bisa menampilkan sebuah tag HTML kita bisa menambahkan directive Vue.js berupa "v-html"
+<html>
+  <p>Using mustaches: {{ rawHtml }}</p>
+  <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+</html>
+<script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        rawHtml: "<span style='color:red;'>Ini berwarna merah</span>",
+      },
+    });
+</script>
+
+* Attribute *
+<html>
+  .text {
+    text-decoration: line-through;
+  }
+  #color-kuning {
+    color: yellow;
+  }
+    <p v-bind:id="'color-' + isColor">Teks ini tercoret</p>
+    <p v-bind:class="bindAtt">Teks ini tercoret</p>
+    <p :class="bindAtt">Teks ini tercoret</p>
+    <img :src="imageSrc" alt="" />
+</html>
+<script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        bindAtt: "text"
+        imageSrc: "images.png",
+        isColor: "kuning"
+      },
+    });
+</script>
+
+* Using Javascritp Expression *
+<html>
+  <ul>
+    <li v-once>Name: {{name.toUpperCase()}}</li> 
+    <li>Age: {{age}}</li>
+    <li>
+      University : {{ univ ? 'Muhammadiyah University of Surakarta': '-' }}
+    </li>
+  </ul>
+  <div v-bind:id="'list-' + id"></div>
+</html>
+<script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        // string, number, boolean
+        name: "Alfian Yulianto",
+        age: 22,
+        univ: true
+      },
+    });
+</script>

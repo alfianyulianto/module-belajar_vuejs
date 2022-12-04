@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Beginner</title>
+    <style>
+      body {
+        margin: 5%;
+        font-family: "Quicksand", sans-serif;
+      }
+      .text {
+        text-decoration: line-through;
+      }
+      .red {
+        color: red;
+      }
+      #color-kuning {
+        color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <img src="../assets/vue.png" alt="Logo Vue" />
+        <h1>What is Vue.js</h1>
+        <p>The Javacript Framework to Build User Interface</p>
+      </header>
+
+      <!-- INTERPOLATION -->
+      <!-- Interpolation Text -->
+      <h1>#Biografi Developer</h1>
+      <ul>
+        <!-- Interpolation Using Javascript Expression -->
+        <li v-once>Name : {{ name.toUpperCase() }}</li>
+
+        <li>Age : <span v-text="age"></span></li>
+        <li>Worker : <span v-bind:title="worker">true</span></li>
+        <li>Address : {{ address }}</li>
+
+        <!-- Interpolation Using Javascript Expression -->
+        <li>
+          University : {{ univ ? 'Muhammadiyah University of Surakarta': '-' }}
+        </li>
+      </ul>
+
+      <!-- Interpolation Using Javascript Expression -->
+      <div>
+        Jika umur ku 22 di tambah 10 tahun lagi sama dengan
+        <span class="red">{{ age + 10 }}</span>
+      </div>
+
+      <hr />
+      <!-- Interpolation rawHTML -->
+      <p>Using mustaches: {{ rawHtml }}</p>
+      <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+
+      <hr />
+      <!-- Interpolation Attribute -->
+      <div v-bind:id="'color-' + isColor">Ini warna kuning</div>
+      <p v-bind:class="bindAtt">Teks ini tercoret</p>
+      <p :class="bindAtt">Teks ini tercoret</p>
+      <img :src="imageSrc" alt="" />
+
+      <footer id="footer">
+        <p>Copyright 2022</p>
+      </footer>
+    </div>
+    <script src="../assets/vue.js"></script>
+    <script>
+      const data = {
+        // string, number, boolean
+        name: "Alfian Yulianto",
+        age: 22,
+        worker: false,
+        address: "",
+        univ: true,
+        isColor: "kuning",
+        rawHtml: "<span style='color:red;'>Ini berwarna merah</span>",
+        bindAtt: "text",
+        imageSrc: "../assets/images.png",
+      };
+
+      // INSTANSISASI VUE
+      const vm = new Vue({
+        el: "#app",
+
+        // data: {
+        //   // string, number, boolean
+        //   name: "Alfian Yulianto",
+        //   age: 22,
+        //   worker: false,
+        //   address: "",
+        // },
+
+        data: data,
+        methods: {
+          getName: function () {
+            console.log("Hallo, my name is " + this.name);
+          },
+          getAddress() {
+            console.log("My address is " + this.address);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

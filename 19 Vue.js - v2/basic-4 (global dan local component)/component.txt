@@ -1,0 +1,101 @@
+- Component : merupakan sebuah object dari intansiasi Vue.js yang dapat digunakan sebagai fungsi untuk menyimpan sebuah tamplate sehingga kita dapat memanggilnya berulang kali
+- Saat kita membuat sebuah "component" data sebagai option dalam komponen harus berbentu sebagai "function"
+
+- Name Casing / Penamaan 
+  * Kebab Case : Vue.component('my-component-name', { /* ... */ })
+  * Pascal Case : Vue.component('MyComponentName', { /* ... */ })
+
+- Cara membuat Component
+
+  * GLOBAL COMPONENT  
+    Vue.component('button-component', {
+      data: function() {      
+        return {
+          count: 0,
+        }
+      },
+      tamplate: `<button @click="count++">Tombol ini sudah di klik {{count}} kali.</button>
+    })
+
+    <div id="app">
+      <button-component></button-component>
+    </div>
+
+  * LOCAL COMPONENT   
+  var ComponenA = {/* ... */}
+  var ComponenB = {/* ... */}
+  var ComponenC = {/* ... */}
+
+  const vm = Vue({
+    el: "#app",
+    components: {
+      'component-a': ComponenA,
+      'component-b': ComponenB,
+      'component-c': ComponenC,
+    }
+  })
+
+
+- Passing Data to Child Components with Props
+- Props merupakan costum attribute yang dapat kita daftarkan pada suatu component. Pada saat nilai di kirim ke attribute props maka nilai tersebut akan menjadi property data pada component
+  Vue.component("block-post", {
+    props: ["title"],
+    tamplate: `<h3>{{title}}</h3>`
+  })
+  - satu kali props attribute di daftarkan, kamu dapat ke custome attribute
+  <block-post title="My Journey with Vue"></block-post>
+  <block-post title="Blogging with Vue"></block-post>
+
+- Listening to Child Components Events
+- Digunakan untuk parent berkomunikasi dengan component child
+  <blog-post v-bind:title="judul"></blog-post>
+
+  Vue.component("blog-post", {
+    props: ['title']
+    tempalate:`<div>
+      <h3>{{title}}</h3>
+    </div>`
+  });
+
+  const vm = Vue({
+    data: {
+      judul: "Belajar HTML",
+    }
+  })
+
+
+- Emitting a Value With an Event
+- Digunakan untuk sebuah component child berkomunikasi dengan parent
+    <blog-post v-bind:title="judul" v-on:set-count="setCount()"></blog-post>
+
+  Vue.component("blog-post", {
+    props: ['title']
+    tempalate:`<div>
+      <h3>{{title}}</h3>
+      <button v-on:click="$emit('set-count')">Klik</button>
+    </div>`
+  });
+
+  const vm = Vue({
+    data: {
+      judul: "Belajar HTML",
+      count: 0,
+    }
+    methods: {
+      setCount() {
+        this.count++
+      }
+    }
+  })
+
+
+- Content Distribution with Slots
+- Sebuah deklarasi dari custome component sama halnya seperti tag HTML lainnya. Ketika kita menambah sebuah kata di tengahnya maka kita bisa menangkap kata tersebut dan segan sebuah <slot> yang ada di "component child"
+  <alert-box>Something bad happened.</alert-box>
+  Vue.component('alert-box', {
+  template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `

@@ -1,0 +1,163 @@
+- Directive : sebuah atribut khusus yang di miliki oleh Vue.js untuk menjalankan sebuah ekspresi atau perintah
+- Cara penggunaan diawali dengan sintaks "v-"
+- Macam-macam Directive Vue.js
+  * v-text : data berupa plain text(seperti menggunakan textContent pada DOM Javascript)
+    - <h1 v-text="Expression"></h1>
+
+  * v-html : data berupa html(seperti menggunakann innerHTML pada DOM Javascript)
+    - <h1 v-html="Expression"></h1>
+
+  * v-show : digunakan seperti if-eles jika truthy maka akan menampilkan jika falsy maka tidak akan ditampilkan. Perbedaannya dengan if-else biasa directive v-show jjika dia bernilai false maka elementnyya hanya di tambahkan style css display: none
+    - <h1 v-html="Expression"></h1>
+
+  * v-if : digunakan ketika satu kondisi bernilai true, maka element pada DOM nya akan ditambahkan
+  * v-else : digunakan ketika dua kondisi berniali true, maka element pada DOM nya tidak ditambahkan
+  <div v-if="Math.random() > 0.5">
+    Now you see me
+  </div>
+  <div v-else>
+    Now you don't
+  </div>
+
+  * v-else-if : digunaka ketika banyak kondisi
+    <div v-if="type === 'A'">
+      A
+    </div>
+    <div v-else-if="type === 'B'">
+      B
+    </div>
+    <div v-else-if="type === 'C'">
+      C
+    </div>
+    <div v-else>
+      Not A/B/C
+    </div>
+
+  * v-for : digunakan untuk perulangan array, object\
+    <div v-for="alias in Expression">
+      {{ alias.text }}
+    </div>
+    * Anda juga dapat menentukan alias untuk indeks (atau kunci jika digunakan pada Objek):
+      <div v-for="(item, index) in items"></div>
+      <div v-for="(val, key) in object"></div>
+      <div v-for="(val, name, index) in object"></div>
+
+  * v-on : digunakan untuk melakukan sebuah event listener pada DOM
+    <!-- method handler -->
+    <button v-on:click="doThis"></button>
+
+    <!-- dynamic event (2.6.0+) -->
+    <button v-on:[event]="doThis"></button>
+
+    <!-- shorthand -->
+    <button @click="doThis"></button>
+
+    <!-- shorthand dynamic event (2.6.0+) -->
+    <button @[event]="doThis"></button>
+
+    <!-- stop propagation -->
+    <button @click.stop="doThis"></button>
+
+    <!-- prevent default -->
+    <button v-on:click="doThis('message', $event)"></button>
+    <button @click.prevent="doThis"></button>
+
+    <!-- prevent default without expression -->
+    <form @submit.prevent></form>
+
+    <!-- chain modifiers -->
+    <button @click.stop.prevent="doThis"></button>
+
+    <!-- key modifier using keyAlias -->
+    <input @keyup.enter="onEnter">
+
+    <!-- key modifier using keyCode -->
+    <input @keyup.13="onEnter">
+
+    <!-- the click event will be triggered at most once -->
+    <button v-on:click.once="doThis"></button>
+
+    <!-- object syntax (2.4.0+) -->
+    <button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
+
+  * v-bind : untuk bainding data satu arah
+    <div :class={active: isActive, 'text-danger': hasError}></div>
+    data: {
+      isActive: true,
+      hasError: false
+    }
+
+
+  * v-model : untuk binding data dua arah (tag input, select, textarea, checkbox, radio)
+    <input v-model="message" placeholder="edit me">
+    <p>Message is: {{ message }}</p>
+
+  * v-slot
+  * v-pre
+  * v-cloak
+  * v-once : untuk menampilkan data satu kali(tidak dirender ulang meskipun data diubah)
+
+
+- Form input dinding : kita bisa menggunakan v-model untuk membuat tow-way data binding untuk element form input, text-area dan select
+  * text
+    <p>{{message}}</p>
+    <input type="text" v-model="message">
+    data: {
+      message:"",
+    }
+
+  * miltiline text / text-area
+    <p>{{message}}</p>
+    <input type="textarea" v-model="message">
+    data: {
+      message: "",
+    }
+
+  * checkbox : sebuah checkbox jika dalan form input tidak terdapat sebuah value maka akan berisi sebuah boolean "ture atau false"
+    <p>{{checked}}</p>
+    <input type="checkbox" v-model="cheked">
+    data: {
+      cheked: false
+    }
+    * checkbox terkait pada sebuah Array
+    <p>{{checkedOfArray}}</p>
+    <input type="checkbox" v-model="chekedOfArray" value="HTML">
+    <input type="checkbox" v-model="chekedOfArray" value="CSS">
+    <input type="checkbox" v-model="chekedOfArray" value="Javascript">
+    <input type="checkbox" v-model="chekedOfArray" value="PHP">
+    <input type="checkbox" v-model="chekedOfArray" value="Python">
+    data: {
+      chekedOfArray: [],
+    }
+
+  * radio button
+    <p>{{ picked }}</p>
+    <input type="radio" value="Alfian" v-model="picked">
+    <input type="radio" value="Erik" v-model="picked">
+    <input type="radio" value="Budi" v-model="picked">
+    data: {
+      picked: "",
+    }
+
+  * select
+    <p>{{ selected }}</p>
+    <select v-model="selected">
+      <option disabled value="">Please select one</option>
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+    data: {
+      selected:"",
+    }
+    * select terkait untuk sebuah Array
+    <p>{{ selectedOfArray }}</p>
+    <select v-model="selected" multiple>
+      <option disabled value="">Please select one</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+    </select>
+    data: {
+      selectedOfArray: [],
+    }

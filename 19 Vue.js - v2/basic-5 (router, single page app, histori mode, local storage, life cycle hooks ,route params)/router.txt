@@ -1,0 +1,14 @@
+- Vue Router adalah router resmi untuk Vue.js. Ini sangat terintegrasi dengan inti Vue.js untuk membuat pembuatan Aplikasi Single Page dengan Vue.js menjadi mudah. Fitur termasuk:
+  * Nested routes mapping
+  *Dynamic Routing
+  * Modular, component-based router configuration
+  * Route params, query, wildcards
+  * View transition effects powered by Vue.js' transition system
+  * Fine-grained navigation control
+  * Links with automatic active CSS classes
+  * HTML5 history mode or hash mode
+  * Customizable Scroll Behavior
+  * Proper encoding for URLs
+
+- route-link: untuk membuat sebuah link (seperti halnya menggunakan tag a). Route link memungkinkan kita untuk merubah halaman tanpa mereload halaman, dan menangani penggunaan URL
+- router-view: untuk menampilkan component yang terhubung ke URL
